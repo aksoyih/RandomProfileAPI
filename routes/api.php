@@ -6,7 +6,17 @@ use App\Http\Middleware\ValidateProfileFields;
 use App\Http\Middleware\ValidateNumberOfProfiles;
 use App\Http\Middleware\LogRequestMiddleware;
 
-Route::get('/gender/{gender}', [ProfileController::class, 'profile'])->middleware([ValidateProfileFields::class, LogRequestMiddleware::class]);
+Route::middleware('throttle:60,1')->group(function () {
+    Route::get('/gender/{gender}', [ProfileController::class, 'profile'])
+        ->middleware([
+            ValidateProfileFields::class,
+            LogRequestMiddleware::class
+        ]);
 
-Route::get('/gender/{gender}/{nProfiles}', [ProfileController::class, 'profiles'])
-    ->middleware([ValidateProfileFields::class, ValidateNumberOfProfiles::class, LogRequestMiddleware::class]);
+    Route::get('/gender/{gender}/{nProfiles}', [ProfileController::class, 'profiles'])
+        ->middleware([
+            ValidateProfileFields::class,
+            ValidateNumberOfProfiles::class,
+            LogRequestMiddleware::class
+        ]);
+});
