@@ -7,60 +7,187 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# Random Profile API
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+A robust REST API built with Laravel that generates random user profiles with customizable fields and gender options. The API includes request logging, rate limiting, and usage statistics.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Generate single or multiple random profiles
+- Filter profiles by gender (male/female)
+- Customizable profile fields
+- Request logging and statistics
+- Rate limiting (60 requests per minute)
+- Input validation
+- Queue-based logging system
 
-## Learning Laravel
+## API Endpoints
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Profile Generation
+- `GET /api/profile` - Get a single random profile
+- `GET /api/profiles/{count}` - Get multiple random profiles
+- `GET /api/profiles/{gender}/{count}` - Get profiles by gender (male or female)
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### Query Parameters
+- `fields` - Comma-separated list of fields to include in the response
+  - Example: `/api/profile?fields=name,surname,email`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Statistics
+- `GET /api/stats` - Get API usage statistics
 
-## Laravel Sponsors
+## Rate Limiting
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+The API implements rate limiting to ensure fair usage:
+- 60 requests per minute per IP address
+- Exceeded limits will return a 429 Too Many Requests response
 
-### Premium Partners
+## Installation
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   composer install
+   ```
+3. Copy `.env.example` to `.env` and configure your environment
+4. Generate application key:
+   ```bash
+   php artisan key:generate
+   ```
+5. Run migrations:
+   ```bash
+   php artisan migrate
+   ```
+
+## Requirements
+
+- PHP 8.1 or higher
+- Laravel 10.x
+- SQLite/MySQL/PostgreSQL
+
+## Example Response
+
+```json
+{
+    "gender": "female",
+    "name": "Emel",
+    "surname": "Tuğluk",
+    "tckn": "50529731282",
+    "serialNumber": "B19QUIGNS",
+    "birthdate": "1974-07-12",
+    "age": 50,
+    "titles": {
+        "academic_title": null
+    },
+    "email": "camdali.burcu@example.net",
+    "phone": {
+        "number": "05404368854",
+        "device_operation_system": "Android",
+        "device": "OnePlus 10 Pro",
+        "imei": "478076218170846"
+    },
+    "loginCredentials": {
+        "username": "Serhan_184",
+        "email": "emel.tokgoz@example.com",
+        "password": "|{8lwO}T[v=KO",
+        "salt": "26a1720701dd2387d44ba77ec5872e91",
+        "hash": "$2y$12$1tXCTWoAb.g4jNsIny9V2.bo/lfV6xnsEVEQDJAlEhjDpPUan5B.O",
+        "md5": "e0f952d22050935b75d4bac8d81e152e",
+        "sha1": "8b91926f8bc75bde76acb9c099008a7903178d8a",
+        "sha256": "$2y$12$1tXCTWoAb.g4jNsIny9V2.bo/lfV6xnsEVEQDJAlEhjDpPUan5B.O",
+        "created_at": "2025-01-02 09:38:43",
+        "updated_at": "2025-02-06 05:18:24"
+    },
+    "miscellaneous": {
+        "favorite_emojis": [
+            "🤣",
+            "😒"
+        ],
+        "language_code": "uz",
+        "country_code": "TR",
+        "locale_data": "zh_HK",
+        "currency_code": "TRY"
+    },
+    "networkInfo": {
+        "ipv_4": "249.17.116.227",
+        "ipv_6": "3f39:23dc:cd64:8275:ea28:3cef:1f5e:243b",
+        "mac_address": "1C:30:B8:03:0C:E0"
+    },
+    "maritalInfo": {
+        "status": "married",
+        "marriage_date": "1995-03-30",
+        "marriedFor": 32,
+        "spouse": {
+            "gender": "male",
+            "name": "Görkem",
+            "surname": "Avan",
+            "tckn": "39190001542",
+            "serialNumber": "IF89VDE7C",
+            "birthdate": "2006-11-23",
+            "age": 70,
+            "email": "babacan.ruzgar@example.org",
+            "phone": {
+                "number": "05462291223",
+                "device_operation_system": "Android",
+                "device": "Samsung Galaxy A53",
+                "imei": "835716135716811"
+            }
+        }
+    },
+    "children": {
+        "count": 0,
+        "children": [
+
+        ]
+    },
+    "address": {
+        "fullAddress": "Sandalcı Kavşağı Merkez No: 97 / Aksaray",
+        "city": "Aksaray",
+        "district": "Merkez",
+        "street": "Sandalcı Kavşağı",
+        "apartmentNumber": 97,
+        "postalCode": 47651,
+        "timeZone": {
+            "timeZone": "Europe/Istanbul",
+            "time": "14:19:56"
+        },
+        "coordinates": {
+            "latitute": "37.646023",
+            "longitute": "28.386904"
+        },
+        "openstreetmap_link": "https://www.openstreetmap.org/?mlat=37.646023&mlon=28.386904"
+    },
+    "bankAccount": {
+        "iban": "TR582580195862252129980748050",
+        "bic": "BGWXTA1V268",
+        "bank": "Yapı Kredi",
+        "currency": "TRY",
+        "balance": 50093.71,
+        "debt": 49817.12
+    },
+    "images": {
+        "avatar": "https://avatars.dicebear.com/api/personas/yiğit.jpg",
+        "profile_picture": "https://xsgames.co/randomusers/avatar.php?g=female",
+        "pixel_art": "https://xsgames.co/randomusers/avatar.php?g=pixel"
+    },
+    "job": {
+        "workingStatus": "working",
+        "company": "Çörekçi Poyrazoğlu A.Ş. Grup",
+        "position": "Öğretmen",
+        "startDate": "2008-05-21",
+        "endDate": null,
+        "experience": 16,
+        "salary": {
+            "monthly": 87326,
+            "annually": 1047912
+        }
+    }
+}
+```
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced software licensed under the MIT license.
