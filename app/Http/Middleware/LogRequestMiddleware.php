@@ -2,10 +2,9 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Log;
+use App\Jobs\LogRequestJob;
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class LogRequestMiddleware
 {
@@ -32,8 +31,7 @@ class LogRequestMiddleware
             'nProfiles'   => $request->route('nProfiles') ?? 1,
         ];
 
-        // Save the log to the database
-        Log::create($logData);
+        LogRequestJob::dispatch($logData);
 
         return $response;
     }
