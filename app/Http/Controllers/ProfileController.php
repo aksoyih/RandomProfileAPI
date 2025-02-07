@@ -13,8 +13,13 @@ class ProfileController extends Controller
         $this->factory = new RandomProfileFactory();
     }
 
-    public function profile(Request $request, $gender): \Illuminate\Http\JsonResponse
+    public function profile(Request $request, $gender = null): \Illuminate\Http\JsonResponse
     {
+        if($gender === null) {
+            $genders = ['male', 'female'];
+            $gender = $genders[array_rand($genders)];
+        }
+
         $fields = $request->query('fields');
         if ($fields) {
             $fieldsArray = explode(',', $fields);
@@ -26,8 +31,13 @@ class ProfileController extends Controller
         return response()->json($profile);
     }
 
-    public function profiles(Request $request, $gender, $nProfiles): \Illuminate\Http\JsonResponse
+    public function profiles(Request $request, $nProfiles, $gender = null): \Illuminate\Http\JsonResponse
     {
+        if($gender === null) {
+            $genders = ['male', 'female'];
+            $gender = $genders[array_rand($genders)];
+        }
+
         $fields = $request->query('fields');
         if ($fields) {
             $fieldsArray = explode(',', $fields);

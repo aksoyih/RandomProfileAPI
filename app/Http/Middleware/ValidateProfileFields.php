@@ -30,6 +30,11 @@ class ValidateProfileFields
         'job'
     ];
 
+    public function getAllowedFields(): array
+    {
+        return $this->allowedFields;
+    }
+
     public function handle(Request $request, Closure $next): Response
     {
         $fields = $request->query('fields');
