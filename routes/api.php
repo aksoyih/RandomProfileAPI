@@ -19,6 +19,7 @@ Route::middleware('throttle:60,1')->group(function () {
     Route::get('/profiles/{nProfiles}', [ProfileController::class, 'profiles'])
         ->middleware([
             ValidateProfileFields::class,
+            ValidateNumberOfProfiles::class,
             LogRequestMiddleware::class
         ]);
 
